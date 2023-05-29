@@ -1,0 +1,121 @@
+# docker compose -f docker-compose.yml up --build --force-recreate -d
+version: '3.4'
+services:
+  burn_vmaster:
+    build:
+      context: burn_vmaster
+      dockerfile: Dockerfile
+    container_name: burn-vmaster
+    ports:
+      - "5005:5005"
+      - "6006:6006"
+      - "51235:51235"
+    volumes:
+      - ${PWD}/burn_vmaster/debug.log:/var/log/rippled/debug.log
+      - ${PWD}/burn_vmaster/db:/var/lib/rippled/db
+      - ${PWD}/burn_vmaster/xpop:/var/lib/rippled/xpop
+    networks:
+      - burn-network
+  burn_vnode1:
+    build:
+      context: burn_vnode1
+      dockerfile: Dockerfile
+    container_name: burn-vnode1
+    ports:
+      - "5006:5006"
+      - "6007:6007"
+      - "51236:51236"
+    volumes:
+      - ${PWD}/burn_vnode1/debug.log:/var/log/rippled/debug.log
+      - ${PWD}/burn_vnode1/db:/var/lib/rippled/db
+      - ${PWD}/burn_vnode1/xpop:/var/lib/rippled/xpop
+    networks:
+      - burn-network
+  burn_pnode1:
+    build:
+      context: burn_pnode1
+      dockerfile: Dockerfile
+    container_name: burn-pnode1
+    ports:
+      - "5007:5007"
+      - "6008:6008"
+      - "51237:51237"
+    volumes:
+      - ${PWD}/burn_pnode1/debug.log:/var/log/rippled/debug.log
+      - ${PWD}/burn_pnode1/db:/var/lib/rippled/db
+      - ${PWD}/burn_pnode1/xpop:/var/lib/rippled/xpop
+    networks:
+      - burn-network
+  burn_vl:
+    build:
+      context: burn_vl
+      dockerfile: Dockerfile
+    container_name: burn-vl
+    ports:
+      - "80:80"
+    networks:
+      - burn-network
+  burn_explorer:
+    image: transia/explorer:latest
+    container_name: burn-explorer
+    environment:
+      - PORT=3000
+      - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:6008
+    ports:
+      - "3000:3000"
+    networks:
+      - burn-network
+  mint_vmaster:
+    build:
+      context: mint_vmaster
+      dockerfile: Dockerfile
+    container_name: mint-vmaster
+    ports:
+      - "5015:5015"
+      - "6018:6018"
+      - "6016:6016"
+      - "51245:51245"
+    volumes:
+      - ${PWD}/mint_vmaster/debug.log:/var/log/rippled/debug.log
+      - ${PWD}/mint_vmaster/db:/var/lib/rippled/db
+    networks:
+      - mint-network
+  mint_vnode1:
+    build:
+      context: mint_vnode1
+      dockerfile: Dockerfile
+    container_name: mint-vnode1
+    ports:
+      - "5016:5016"
+      - "6019:6019"
+      - "6017:6017"
+      - "51246:51246"
+    volumes:
+      - ${PWD}/mint_vnode1/debug.log:/var/log/rippled/debug.log
+      - ${PWD}/mint_vnode1/db:/var/lib/rippled/db
+    networks:
+      - mint-network
+  mint_vl:
+    build:
+      context: mint_vl
+      dockerfile: Dockerfile
+    container_name: mint-vl
+    ports:
+      - "81:81"
+    networks:
+      - mint-network
+  mint_explorer:
+    image: transia/explorer:latest
+    container_name: mint-explorer
+    environment:
+      - PORT=3001
+      - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:6016
+    ports:
+      - "3001:3001"
+    networks:
+      - mint-network
+networks:
+  burn-network:
+    driver: bridge
+  mint-network:
+    driver: bridge

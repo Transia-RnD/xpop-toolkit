@@ -1,0 +1,47 @@
+{
+  "name": "@transia/xpop-toolkit",
+  "version": "1.0.0",
+  "description": "A library for using the xpop features.",
+  "main": "dist/npm/src/index.js",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "generate": "ts-node generate.ts",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "jest --config=jest.config.unit.js",
+    "test:integration": "jest --config=jest.config.integration.js",
+    "test:generate": "jest --config=jest.config.unit.js test/generate.test.ts",
+    "lint": "eslint ./src/**/* --ext .ts",
+    "format": "npx prettier --write ./src",
+    "build": "tsc"
+  },
+  "author": {
+    "name": "Denis Angell",
+    "url": "https://github.com/dangell7"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@transia/xrpl": "^2.7.3-alpha.3",
+    "axios": "^1.4.0",
+    "crypto-js": "^4.1.1"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/chai": "^4.3.4",
+    "@types/crypto-js": "^4.1.1",
+    "@types/jest": "^29.5.0",
+    "@types/lodash": "^4.14.192",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "chai": "^4.3.7",
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.5.0",
+    "prettier": "^2.8.4",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
+}
