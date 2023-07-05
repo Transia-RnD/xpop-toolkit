@@ -3,10 +3,8 @@ import {
   validateConnection,
   Xrpld,
   readWaitXpopUrl,
-  getTransactionFee,
   accountSeq,
 } from '@transia/xpop-toolkit'
-import path from 'path'
 
 export async function main(): Promise<void> {
   // BURN CLIENT
@@ -14,6 +12,7 @@ export async function main(): Promise<void> {
   const burnClient = new Client(burnUrl)
   await burnClient.connect()
 
+  // MINT CLIENT
   const mintUrl = 'wss://hooks-testnet-v3.xrpl-labs.com'
   const mintClient = new Client(mintUrl)
   await mintClient.connect()
@@ -38,7 +37,7 @@ export async function main(): Promise<void> {
   const burnResult = await Xrpld.submitRippled(burnClient, burnTx, aliceWallet)
   console.log(burnResult)
   const hash = burnResult.hash
-  const url = 'https://testnet.transia.co/xpop'
+  const url = 'https://testnet.transia.co/xpop/'
   const strJsonXpop = await readWaitXpopUrl(url, hash, 10)
   const xpopHex = strJsonXpop.toString('hex').toUpperCase()
 
