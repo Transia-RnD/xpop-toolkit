@@ -4,6 +4,7 @@
   "description": "An Xpop playground to demo the b2m sdk.",
   "main": "index.js",
   "scripts": {
+    "mini-network": "ts-node src/mini-network.ts",
     "testnet": "ts-node src/testnet.ts",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src"

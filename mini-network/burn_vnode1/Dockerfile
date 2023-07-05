@@ -1,4 +1,4 @@
-FROM gcr.io/thelab-924f3/dangell7-testnet-rippled:latest as rippled
+FROM gcr.io/thelab-924f3/dangell7-testnet-rippled:1 as rippled
 
 WORKDIR /app
 
@@ -13,6 +13,6 @@ RUN chmod +x /entrypoint.sh && \
     echo '#!/bin/bash' > /usr/bin/server_info && echo '/entrypoint.sh server_info' >> /usr/bin/server_info && \
     chmod +x /usr/bin/server_info
 
-EXPOSE 5005 6006 51235 51235/udp
+EXPOSE 5006 6007 51236 51236/udp
 
 ENTRYPOINT [ "/entrypoint.sh" ]

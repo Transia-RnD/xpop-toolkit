@@ -11,9 +11,8 @@ services:
       - "6006:6006"
       - "51235:51235"
     volumes:
-      - ${PWD}/burn_vmaster/debug.log:/var/log/rippled/debug.log
-      - ${PWD}/burn_vmaster/db:/var/lib/rippled/db
-      - ${PWD}/burn_vmaster/xpop:/var/lib/rippled/xpop
+      - ${PWD}/burn_vmaster/log:/var/log/rippled
+      - ${PWD}/burn_vmaster/lib:/var/lib/rippled
     networks:
       - burn-network
   burn_vnode1:
@@ -26,9 +25,8 @@ services:
       - "6007:6007"
       - "51236:51236"
     volumes:
-      - ${PWD}/burn_vnode1/debug.log:/var/log/rippled/debug.log
-      - ${PWD}/burn_vnode1/db:/var/lib/rippled/db
-      - ${PWD}/burn_vnode1/xpop:/var/lib/rippled/xpop
+      - ${PWD}/burn_vnode1/log:/var/log/rippled
+      - ${PWD}/burn_vnode1/lib:/var/lib/rippled
     networks:
       - burn-network
   burn_pnode1:
@@ -41,9 +39,8 @@ services:
       - "6008:6008"
       - "51237:51237"
     volumes:
-      - ${PWD}/burn_pnode1/debug.log:/var/log/rippled/debug.log
-      - ${PWD}/burn_pnode1/db:/var/lib/rippled/db
-      - ${PWD}/burn_pnode1/xpop:/var/lib/rippled/xpop
+      - ${PWD}/burn_pnode1/log:/var/log/rippled
+      - ${PWD}/burn_pnode1/lib:/var/lib/rippled
     networks:
       - burn-network
   burn_vl:
@@ -76,8 +73,8 @@ services:
       - "6016:6016"
       - "51245:51245"
     volumes:
-      - ${PWD}/mint_vmaster/debug.log:/var/log/rippled/debug.log
-      - ${PWD}/mint_vmaster/db:/var/lib/rippled/db
+      - ${PWD}/mint_vmaster/log:/var/log/rippled
+      - ${PWD}/mint_vmaster/lib:/var/lib/rippled
     networks:
       - mint-network
   mint_vnode1:
@@ -91,8 +88,8 @@ services:
       - "6017:6017"
       - "51246:51246"
     volumes:
-      - ${PWD}/mint_vnode1/debug.log:/var/log/rippled/debug.log
-      - ${PWD}/mint_vnode1/db:/var/lib/rippled/db
+      - ${PWD}/mint_vnode1/log:/var/log/rippled
+      - ${PWD}/mint_vnode1/lib:/var/lib/rippled
     networks:
       - mint-network
   mint_vl:

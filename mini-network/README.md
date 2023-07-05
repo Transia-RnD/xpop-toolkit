@@ -1,4 +1,4 @@
-# Xpop Playground
+# Xpop Mini Cluster
 
 ### Run docker compose
 
