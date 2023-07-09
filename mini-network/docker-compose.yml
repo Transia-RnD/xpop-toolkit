@@ -41,6 +41,7 @@ services:
     volumes:
       - ${PWD}/burn_pnode1/log:/var/log/rippled
       - ${PWD}/burn_pnode1/lib:/var/lib/rippled
+      - ${PWD}/burn_pnode1/xpop:/www/data/rippled/xpop
     networks:
       - burn-network
   burn_vl:

@@ -47,15 +47,6 @@ export async function main(): Promise<void> {
     )
   }
 
-  if ((await balance(mintClient, aliceWallet.classicAddress)) < 2000) {
-    await fund(
-      mintClient,
-      wallet,
-      new ICXRP(2000),
-      ...[aliceWallet.classicAddress]
-    )
-  }
-
   // ACCOUNT SET OUT
   const burnTx: AccountSet = {
     TransactionType: 'AccountSet',
