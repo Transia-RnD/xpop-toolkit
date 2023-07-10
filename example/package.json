@@ -15,7 +15,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@transia/xpop-toolkit": "/Users/denisangell/projects/xrpl-labs/xpop-toolkit",
+    "@transia/xpop-toolkit": "^1.0.1",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
