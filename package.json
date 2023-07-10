@@ -24,7 +24,8 @@
   "dependencies": {
     "@transia/xrpl": "^2.7.3-alpha.3",
     "axios": "^1.4.0",
-    "crypto-js": "^4.1.1"
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
