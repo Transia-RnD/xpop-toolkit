@@ -6,6 +6,7 @@ rm -r burn_vnode1/lib
 rm -r burn_vnode1/log
 rm -r burn_pnode1/lib
 rm -r burn_pnode1/log
+rm -r burn_pnode1/xpop
 # Clean Mint Chain
 rm -r mint_vmaster/lib
 rm -r mint_vmaster/log
