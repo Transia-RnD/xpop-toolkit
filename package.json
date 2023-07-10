@@ -1,6 +1,6 @@
 {
   "name": "@transia/xpop-toolkit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library for using the xpop features.",
   "main": "dist/npm/src/index.js",
   "files": [
