@@ -1,16 +1,5 @@
 import { decode, encode } from '@transia/xrpl'
-
-import fs from 'fs'
-
-interface Test {
-  testName: string
-  testValue: string | Record<string, unknown>
-}
-
-function saveJsonToFile(filePath: string, tests: Test[]): void {
-  const json = JSON.stringify(tests)
-  fs.writeFileSync(filePath, json)
-}
+import { saveJsonToFile } from './utils'
 
 const decodeManifest = (str: string): string =>
   Buffer.from(str, 'base64').toString('hex').toUpperCase()
@@ -22,7 +11,7 @@ const encodeBlob = (str: string): string =>
   Buffer.from(str, 'utf-8').toString('base64')
 
 describe('Validation: decode / encoded', () => {
-  let testContext: Test[]
+  let testContext: TestCase[]
   beforeAll(async () => {
     testContext = []
   })
