@@ -701,10 +701,10 @@
     elliptic "^6.5.4"
     hash.js "^1.0.3"
 
-"@transia/xpop-toolkit@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@transia/xpop-toolkit/-/xpop-toolkit-1.0.1.tgz#40c1be92f97db5584edc66ab02819e1f8c198bec"
-  integrity sha512-vkZo2fD4aUqw5s+mSAqhY9Zj2eHNn2zKQn3nFK6lpbebRy+7HJD4cgxobMiTYJUj4xgLZrLrhgnn817z25vivg==
+"@transia/xpop-toolkit@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@transia/xpop-toolkit/-/xpop-toolkit-1.0.2.tgz#11f4034ff092c685c791313afdc99dc02b66d83e"
+  integrity sha512-ShP0+UrBtlQ1TYui+2Wll11FjxuPeW3AcC5Wjr5pQIk9BGeJ2Fpm6V+Wng0csQcDd5cd6i2P400p9lLP6bsr3w==
   dependencies:
     "@transia/xrpl" "^2.7.3-alpha.3"
     axios "^1.4.0"
