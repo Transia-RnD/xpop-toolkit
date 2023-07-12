@@ -113,7 +113,7 @@ export async function getXpopBlob(
           .toString('hex')
           .toUpperCase()
     }
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(`Failed to get Xpop Blob: ${error.message}`)
   }
 }
