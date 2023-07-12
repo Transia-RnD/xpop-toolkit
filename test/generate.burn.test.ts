@@ -53,7 +53,7 @@ describe('Burn - Success Group', () => {
       aliceWallet
     )
     console.log(result.hash)
-    const strJsonXpop = await readWaitXpop(dir, result.hash, 10)
+    const strJsonXpop = await readWaitXpopDir(dir, result.hash, 10)
     generatedJson['account_set']['w_flags'] = parseJsonXpop(strJsonXpop)
   }, 10000)
   // it('account_set - normal', async () => {
@@ -117,7 +117,7 @@ describe('Burn - Success Group', () => {
   //     builtTx,
   //     bobWallet
   //   )
-  // const strJsonXpop = await readWaitXpop(dir, result.hash, 10)
+  // const strJsonXpop = await readWaitXpopDir(dir, result.hash, 10)
   // generatedJson['set_regular_key']['bob_carol'] = parseJsonXpop(strJsonXpop)
   // }, 10000)
   // it('regular key - carol -> bob', async () => {
@@ -133,7 +133,7 @@ describe('Burn - Success Group', () => {
   //     builtTx,
   //     carolWallet
   //   )
-  //   const strJsonXpop = await readWaitXpop(dir, result.hash, 10)
+  //   const strJsonXpop = await readWaitXpopDir(dir, result.hash, 10)
   //   generatedJson['set_regular_key']['carol_empty'] = parseJsonXpop(strJsonXpop)
   // }, 10000)
   // it('signers set list - bob -> carol', async () => {
@@ -155,7 +155,7 @@ describe('Burn - Success Group', () => {
   //     builtTx,
   //     bobWallet
   //   )
-  //   const strJsonXpop = await readWaitXpop(dir, result.hash, 10)
+  //   const strJsonXpop = await readWaitXpopDir(dir, result.hash, 10)
   //   generatedJson['signers_list_set']['bob_carol'] = parseJsonXpop(strJsonXpop)
   // }, 10000)
 })

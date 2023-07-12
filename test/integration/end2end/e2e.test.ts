@@ -10,7 +10,7 @@ import {
   // SDK
   validateConnection,
   Xrpld,
-  readWaitXpop,
+  readWaitXpopDir,
   accountSeq,
 } from '../../../dist/npm/src'
 import path from 'path'
@@ -50,7 +50,7 @@ describe('End 2 End - Success Group', () => {
       aliceWallet
     )
     const dir = path.join(process.cwd(), '/local-rippled/burn_pnode1/xpop')
-    const strJsonXpop = await readWaitXpop(dir, burnResult.hash, 10)
+    const strJsonXpop = await readWaitXpopDir(dir, burnResult.hash, 10)
     const xpopHex = strJsonXpop.toString('hex').toUpperCase()
 
     // IMPORT OUT

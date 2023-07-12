@@ -2,7 +2,7 @@ import { Client, AccountSet, Import, xrpToDrops } from '@transia/xrpl'
 import {
   validateConnection,
   Xrpld,
-  readWaitXpop,
+  getXpopBlob,
   accountSeq,
 } from '@transia/xpop-toolkit'
 import {
@@ -56,11 +56,11 @@ export async function main(): Promise<void> {
     Fee: xrpToDrops(10),
   }
   const burnResult = await Xrpld.submitRippled(burnClient, burnTx, aliceWallet)
-  console.log(burnResult)
-  const hash = burnResult.hash
+  await burnClient.disconnect()
+
+  // GET XPOP
   const dir = path.join(process.cwd(), '../mini-network/burn_pnode1/xpop')
-  const strJsonXpop = await readWaitXpop(dir, hash, 10)
-  const xpopHex = strJsonXpop.toString('hex').toUpperCase()
+  const xpopHex = await getXpopBlob(dir, burnResult.hash, 'dir', 10)
 
   // IMPORT OUT
   const seq = await accountSeq(mintClient, aliceWallet.classicAddress)
@@ -75,7 +75,6 @@ export async function main(): Promise<void> {
   console.log(mintResult)
 
   await mintClient.disconnect()
-  await burnClient.disconnect()
 }
 
 main()

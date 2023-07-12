@@ -55,7 +55,7 @@ export async function readWaitXpopUrl(
   throw new Error(`Could not find result after ${retryCount} attempts`)
 }
 
-export async function readWaitXpop(
+export async function readWaitXpopDir(
   dir: string,
   filename: string,
   retryCount: number
@@ -76,6 +76,46 @@ export async function readWaitXpop(
     }
   }
   throw new Error(`Could not find result after ${retryCount} attempts`)
+}
+
+export async function getXpopBlob(
+  hash: string,
+  urlOrDir: string,
+  type: 'url' | 'dir',
+  retryCount: number
+): Promise<string> {
+  if (typeof hash !== 'string' || hash.length === 0) {
+    throw new Error('Invalid hash. Hash must be a non-empty string.')
+  }
+
+  if (typeof urlOrDir !== 'string' || urlOrDir.length === 0) {
+    throw new Error('Invalid urlOrDir. urlOrDir must be a non-empty string.')
+  }
+
+  if (type !== 'url' && type !== 'dir') {
+    throw new Error('Invalid type. Type must be either "url" or "dir".')
+  }
+
+  if (typeof retryCount !== 'number' || retryCount < 0) {
+    throw new Error(
+      'Invalid retryCount. retryCount must be a non-negative number.'
+    )
+  }
+
+  try {
+    switch (type) {
+      case 'url':
+        return (await readWaitXpopUrl(urlOrDir, hash, retryCount))
+          .toString('hex')
+          .toUpperCase()
+      default:
+        return (await readWaitXpopDir(urlOrDir, hash, retryCount))
+          .toString('hex')
+          .toUpperCase()
+    }
+  } catch (error) {
+    throw new Error(`Failed to get Xpop Blob: ${error.message}`)
+  }
 }
 
 export async function validateConnection(
