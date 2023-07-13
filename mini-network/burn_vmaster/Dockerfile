@@ -8,6 +8,7 @@ RUN export LANGUAGE=C.UTF-8; export LANG=C.UTF-8; export LC_ALL=C.UTF-8; export 
 
 COPY config /config
 COPY entrypoint /entrypoint.sh
+COPY genesis.json /genesis.json
 
 RUN chmod +x /entrypoint.sh && \
     echo '#!/bin/bash' > /usr/bin/server_info && echo '/entrypoint.sh server_info' >> /usr/bin/server_info && \

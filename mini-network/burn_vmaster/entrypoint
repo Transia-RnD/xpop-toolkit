@@ -16,4 +16,4 @@ if [[ "$rippledconfig" -gt "0" && "$validatorstxt" -gt "0" ]]; then
 fi
 
 # Start rippled, Passthrough other arguments
-exec /app/rippled --conf /etc/opt/ripple/rippled.cfg --quorum=2 "$@"
+exec /app/rippled --ledgerfile /genesis.json --conf /etc/opt/ripple/rippled.cfg --quorum=2 "$@"
