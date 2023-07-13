@@ -19,16 +19,10 @@ export function saveJsonToFile(
   filePath: string,
   tests: Record<string, any>
 ): void {
-  const json = JSON.stringify(tests, (key, value) => {
-    // Replace any forward slashes with an empty string
-    if (typeof value === 'string') {
-      return value.replace(/\//g, '') // Replace all occurrences of '/'
-    }
-    return value
-  })
+  const json = JSON.stringify(tests)
   fs.writeFileSync(filePath, json)
 }
 
 export function parseJsonXpop(strJsonXpop: Buffer) {
-  return JSON.parse(JSON.stringify(strJsonXpop.toString('utf8')))
+  return JSON.parse(strJsonXpop.toString('utf8'))
 }
