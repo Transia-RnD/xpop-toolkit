@@ -265,9 +265,9 @@ export async function appTransaction(
   }
 ): Promise<TxResponse> {
   if (process.env.RIPPLED_ENV === 'standalone') {
-    return testTransaction(client, transaction, wallet, retry)
+    return await testTransaction(client, transaction, wallet, retry)
   } else {
-    return prodTransactionAndWait(client, transaction, wallet, retry)
+    return prodTransaction(client, transaction, wallet, retry)
   }
 }
 
@@ -335,7 +335,7 @@ export async function testTransaction(
   // return response
 }
 
-export async function prodTransactionAndWait(
+export async function prodTransaction(
   client: Client,
   transaction: Transaction,
   wallet: Wallet,
@@ -385,7 +385,7 @@ export async function prodTransactionAndWait(
   // check that the transaction is on the ledger
   return await verifySubmittedTransaction(
     client,
-    '',
+    transaction,
     response.result.hash as string
   )
   // return response
