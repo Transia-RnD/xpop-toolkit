@@ -39,7 +39,7 @@ export async function main(): Promise<void> {
 
   // GET XPOP
   const xpopHex = await getXpopBlob(
-    'https://testnet.transia.co/xpop/',
+    'https://testnet.transia.co/xpop',
     burnResult.hash,
     'url',
     10
