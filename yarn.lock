@@ -691,10 +691,10 @@
     elliptic "^6.5.4"
     hash.js "^1.0.3"
 
-"@transia/xrpl@^2.7.3-alpha.6":
-  version "2.7.3-alpha.6"
-  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.6.tgz#d1d60a5d577e6050a3238edf04fa6bb035c62701"
-  integrity sha512-jG7KDJIojckrCcOF2/V25UzTUb+iCt27JrmDCh0+sqx3V5rEQveycol+KMOc6SY2wvb8TC20lpOxbT88f/wz0g==
+"@transia/xrpl@^2.7.3-alpha.9":
+  version "2.7.3-alpha.9"
+  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.9.tgz#c4bafe25df0d77ca4c1aa802a412cdb2f2f9bbca"
+  integrity sha512-BTwBCIyC0pUjszCfHOefb56ToA7P26eNoGXQCIMSaZldbD00YNXIBnUuNC5DukStmj8EPTf7yudG7B5iCS0ZEA==
   dependencies:
     "@transia/ripple-address-codec" "^4.2.8-alpha.0"
     "@transia/ripple-binary-codec" "^1.4.6-alpha.2"

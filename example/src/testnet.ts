@@ -1,4 +1,11 @@
-import { Client, Wallet, AccountSet, Import, xrpToDrops } from '@transia/xrpl'
+import {
+  Client,
+  Wallet,
+  AccountSet,
+  Import,
+  xrpToDrops,
+  SetRegularKey,
+} from '@transia/xrpl'
 import {
   validateConnection,
   Xrpld,
@@ -18,13 +25,23 @@ export async function main(): Promise<void> {
   await mintClient.connect()
   mintClient.networkID = await mintClient.getNetworkID()
 
-  const aliceWallet = Wallet.fromSeed('ss3DnbW3uTbebBLpp42ayuarNfuY4')
+  // const aliceWallet = Wallet.fromSeed('ss3DnbW3uTbebBLpp42ayuarNfuY4')
+  const aliceWallet = Wallet.fromSeed('sEdTunqTkQWu114ieMbWjdTujjo7KSH')
+  const bobWallet = Wallet.fromSeed('sEdV46kgc8L1uzXMNQWxbKnexrHtD11')
 
   // validate burn syncronization - 1 mins (6 tries at 10 seconds)
   await validateConnection(burnClient, 6)
 
   // validate mint syncronization - 1 mins (6 tries at 10 seconds)
   await validateConnection(mintClient, 6)
+
+  const srkTx: SetRegularKey = {
+    TransactionType: 'SetRegularKey',
+    Account: aliceWallet.classicAddress,
+    RegularKey: bobWallet.classicAddress,
+    Fee: xrpToDrops(10),
+  }
+  await Xrpld.submitRippled(burnClient, srkTx, aliceWallet)
 
   // ACCOUNT SET OUT
   const burnTx: AccountSet = {
@@ -34,13 +51,13 @@ export async function main(): Promise<void> {
     OperationLimit: mintClient.networkID,
     Fee: xrpToDrops(10),
   }
-  const burnResult = await Xrpld.submitRippled(burnClient, burnTx, aliceWallet)
+  const burnResult = await Xrpld.submitRippled(burnClient, burnTx, bobWallet)
   await burnClient.disconnect()
 
   // GET XPOP
   const xpopHex = await getXpopBlob(
-    'https://testnet.transia.co/xpop',
     burnResult.hash,
+    'https://testnet.transia.co/xpop',
     'url',
     10
   )
@@ -54,7 +71,7 @@ export async function main(): Promise<void> {
     Sequence: seq,
     Fee: '0',
   }
-  const mintResult = await Xrpld.submitXahaud(mintClient, mintTx, aliceWallet)
+  const mintResult = await Xrpld.submitXahaud(mintClient, mintTx, bobWallet)
   console.log(mintResult)
   await mintClient.disconnect()
 }

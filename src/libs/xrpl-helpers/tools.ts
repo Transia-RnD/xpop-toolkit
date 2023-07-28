@@ -231,12 +231,8 @@ export async function fund(
         Destination: acct as string,
         Amount: uicx.amount as unknown as IssuedCurrencyAmount,
       }
-      
-      await appTransaction(ctx, builtTx, wallet, {
-        hardFail: true,
-        count: 1,
-        delayMs: 1000,
-      })
+
+      await appTransaction(ctx, builtTx, wallet)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error)
@@ -260,11 +256,7 @@ export async function pay(
         Destination: acct as string,
         Amount: uicx.amount as unknown as IssuedCurrencyAmount,
       }
-      await appTransaction(ctx, builtTx, signer, {
-        hardFail: true,
-        count: 1,
-        delayMs: 1000,
-      })
+      await appTransaction(ctx, builtTx, signer)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error)
@@ -287,11 +279,7 @@ export async function trust(
         Account: acct.classicAddress as string,
         LimitAmount: uicx.amount as unknown as IssuedCurrencyAmount,
       }
-      await appTransaction(ctx, builtTx, acct, {
-        hardFail: true,
-        count: 1,
-        delayMs: 1000,
-      })
+      await appTransaction(ctx, builtTx, acct)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error.data?.decoded)
@@ -309,11 +297,7 @@ export async function accountSet(ctx: Client, account: Wallet): Promise<void> {
     Domain: convertStringToHex('https://usd.transia.io'),
     SetFlag: AccountSetAsfFlags.asfDefaultRipple,
   }
-  await appTransaction(ctx, builtTx, account, {
-    hardFail: true,
-    count: 1,
-    delayMs: 1000,
-  })
+  await appTransaction(ctx, builtTx, account)
 }
 
 export async function rpcTx(
@@ -321,11 +305,7 @@ export async function rpcTx(
   account: Wallet,
   json: Record<string, unknown>
 ): Promise<void> {
-  await appTransaction(ctx, json as unknown as Transaction, account, {
-    hardFail: true,
-    count: 1,
-    delayMs: 1000,
-  })
+  await appTransaction(ctx, json as unknown as Transaction, account)
 }
 
 export async function rpc(

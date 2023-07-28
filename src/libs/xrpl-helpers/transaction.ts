@@ -182,8 +182,6 @@ export async function submitTransaction({
   try {
     response = await client.submit(transaction, { wallet })
 
-    console.log(response)
-
     // Retry if another transaction finished before this one
     while (
       ['tefPAST_SEQ', 'tefMAX_LEDGER'].includes(
@@ -267,6 +265,15 @@ export async function appTransaction(
   if (process.env.RIPPLED_ENV === 'standalone') {
     return await testTransaction(client, transaction, wallet, retry)
   } else {
+    if (!retry) {
+      // @ts-expect-error - leave this alone
+      return await submitTransaction({
+        client,
+        wallet,
+        transaction,
+        retry,
+      })
+    }
     return prodTransaction(client, transaction, wallet, retry)
   }
 }
