@@ -62,7 +62,7 @@ describe('Burn - Load Test', () => {
   //     console.log(result.hash)
   //     // expect('false').toBe('true')
   //   }
-  //   const dir = path.join(process.cwd(), 'local-rippled/burn_pnode1/xpop')
+  //   const dir = path.join(process.cwd(), 'mini-network/burn_pnode1/xpop')
   //   const xpopCount = countFiles(dir)
   //   expect(xpopCount / 2).toBe(cycle * tries)
   // })
