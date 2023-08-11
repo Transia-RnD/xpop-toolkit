@@ -51,7 +51,8 @@ async function connectWithRetry(client: Client, tries = 0): Promise<void> {
 }
 
 export async function setupClient(
-  server: string
+  server: string,
+  isZeroGenesis?: boolean | false
 ): Promise<XrplIntegrationTestContext> {
   const currency = 'USD'
   const context: XrplIntegrationTestContext = {
@@ -69,7 +70,9 @@ export async function setupClient(
   return connectWithRetry(context.client)
     .then(async () => {
       context.client.networkID = await context.client.getNetworkID()
-      await fundSystem(context.client, context.master, context.ic)
+      if (!isZeroGenesis) {
+        await fundSystem(context.client, context.master, context.ic)
+      }
       return context
     })
     .catch(async (error: unknown) => {
