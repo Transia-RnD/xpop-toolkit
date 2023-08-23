@@ -116,7 +116,7 @@ describe('Burn - Signers List Set Group', () => {
     generatedJson['signers_list_set']['w_regular_key'] =
       parseJsonXpop(strJsonXpop)
   }, 15000)
-  it('Mainnet TT SRK (Signers List) -> Account Funded', async () => {
+  it('Mainnet TT SRK (Signers List) -> Account DNE', async () => {
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
     const carolWallet = testContext.carol
