@@ -1,4 +1,4 @@
-import { Client, ServerInfoRequest } from '@transia/xrpl'
+import { Client, ServerInfoRequest, Transaction } from '@transia/xrpl'
 import fs from 'fs'
 import path from 'path'
 import axios from 'axios'
@@ -152,6 +152,41 @@ export async function validateConnection(
       attempt++
     }
     throw new Error(`Could not find result after ${retryCount} attempts`)
+  } catch (e) {
+    console.log(e)
+    return
+  }
+}
+
+export async function validateXpopTx(
+  tx: Transaction,
+  hardFail: boolean
+): Promise<void> {
+  try {
+    // If is signed by signers list
+    if (tx.Signers.length > 0) {
+      // THIS WILL HARD FAIL
+      // check that the acctions exist on the network
+    }
+
+    // If SetRegularKey
+    if (tx.TransactionType === 'SetRegularKey') {
+      // check that the accounts exist on the network
+      if (hardFail) {
+        console.log(tx)
+      }
+      console.log(tx)
+    }
+    // If SignersList
+    if (tx.TransactionType === 'SignerListSet') {
+      // check that the accounts exist on the network
+      if (hardFail) {
+        console.log(tx)
+      }
+      console.log(tx)
+    }
+
+    throw new Error(`Unimplemented`)
   } catch (e) {
     console.log(e)
     return
