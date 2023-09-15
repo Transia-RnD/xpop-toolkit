@@ -1,4 +1,4 @@
-FROM gcr.io/thelab-924f3/dangell7-proof-of-burn-rippled:latest as rippled
+FROM transia/rippled-binary:pob as rippled
 
 WORKDIR /app
 
@@ -14,6 +14,6 @@ RUN chmod +x /entrypoint.sh && \
     echo '#!/bin/bash' > /usr/bin/server_info && echo '/entrypoint.sh server_info' >> /usr/bin/server_info && \
     chmod +x /usr/bin/server_info
 
-EXPOSE 5007 6008 51237 51237/udp
+EXPOSE 5008 6009 51238 51238/udp
 
 ENTRYPOINT [ "/entrypoint.sh" ]

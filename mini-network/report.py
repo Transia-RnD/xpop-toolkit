@@ -45,10 +45,11 @@ print('------------------------------------------------------------')
 
 BURN_VL_LIST: List[str] = [
     "http://127.0.0.1:5005",
-    "http://127.0.0.1:5006"
+    "http://127.0.0.1:5006",
+    "http://127.0.0.1:5007"
 ]
 BURN_PEER_LIST: List[str] = [
-    "http://127.0.0.1:5007",
+    "http://127.0.0.1:5008",
 ]
 validate_connection('validator', BURN_VL_LIST)
 validate_connection('peer', BURN_PEER_LIST)

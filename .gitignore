@@ -4,3 +4,5 @@ build
 node_modules
 xpopv3d
 hooksv3d
+
+playground.ts

@@ -1,4 +1,4 @@
-FROM gcr.io/thelab-924f3/dangell7-testnet-rippled:1 as rippled
+FROM transia/ripple-binary:1.11.0 as rippled
 
 WORKDIR /app
 
