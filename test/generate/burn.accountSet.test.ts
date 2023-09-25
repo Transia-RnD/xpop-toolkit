@@ -1,10 +1,13 @@
 import {
   AccountSet,
+  dropsToXrp,
+  Payment,
+  xrpToDrops,
   // AccountSetAsfFlags,
   // SetRegularKey,
   // SignerListSet,
   // multisign,
-  xrpToDrops,
+  // xrpToDrops,
 } from '@transia/xrpl'
 import {
   // Test
@@ -17,6 +20,7 @@ import {
   // pay,
   // ICXRP,
   readWaitXpopDir,
+  balance,
 } from '../../dist/npm/src'
 import { parseJsonXpop, saveJsonToFile } from '../utils'
 import path from 'path'
@@ -53,14 +57,45 @@ describe('Burn - Account Set Group', () => {
   //   const strJsonXpop = await readWaitXpopDir(dir, result.hash, 10)
   //   generatedJson['account_set']['min'] = parseJsonXpop(strJsonXpop)
   // }, 10000)
-  // it('account_set - max', async () => {
+  it('account_set - max', async () => {
+    const aliceWallet = testContext.alice
+    const bal = await balance(
+      testContext.client,
+      testContext.master.classicAddress
+    )
+    const xrpBal = dropsToXrp(bal)
+    const availDrops = xrpToDrops(String(parseInt(xrpBal) - 200))
+
+    const drainTx: Payment = {
+      TransactionType: 'Payment',
+      Account: testContext.master.classicAddress,
+      Destination: aliceWallet.classicAddress,
+      Amount: availDrops,
+    }
+    await Xrpld.submitRippled(testContext.client, drainTx, testContext.master)
+    const builtTx: AccountSet = {
+      TransactionType: 'AccountSet',
+      Account: aliceWallet.classicAddress,
+      // @ts-expect-error - leave this alone
+      OperationLimit: 21337,
+      Fee: availDrops,
+    }
+    const result = await Xrpld.submitRippled(
+      testContext.client,
+      builtTx,
+      aliceWallet
+    )
+    const strJsonXpop = await readWaitXpopDir(dir, result.hash, 10)
+    generatedJson['account_set']['max'] = parseJsonXpop(strJsonXpop)
+  }, 10000)
+  // it('account_set - w/ seed', async () => {
   //   const aliceWallet = testContext.alice
   //   const builtTx: AccountSet = {
   //     TransactionType: 'AccountSet',
   //     Account: aliceWallet.classicAddress,
   //     // @ts-expect-error - leave this alone
   //     OperationLimit: 21337,
-  //     Fee: '999999999999999',
+  //     Fee: xrpToDrops(1000),
   //   }
   //   const result = await Xrpld.submitRippled(
   //     testContext.client,
@@ -68,29 +103,9 @@ describe('Burn - Account Set Group', () => {
   //     aliceWallet
   //   )
   //   console.log(result.hash)
-  //   accountGroup.testCases.push({
-  //     testName: 'max',
-  //     testValue: result.hash,
-  //   })
-  // })
-  it('account_set - w/ seed', async () => {
-    const aliceWallet = testContext.alice
-    const builtTx: AccountSet = {
-      TransactionType: 'AccountSet',
-      Account: aliceWallet.classicAddress,
-      // @ts-expect-error - leave this alone
-      OperationLimit: 21337,
-      Fee: xrpToDrops(1000),
-    }
-    const result = await Xrpld.submitRippled(
-      testContext.client,
-      builtTx,
-      aliceWallet
-    )
-    console.log(result.hash)
-    const xpop = await readWaitXpopDir(dir, result.hash, 10)
-    generatedJson['account_set']['w_seed'] = parseJsonXpop(xpop)
-  }, 15000)
+  //   const xpop = await readWaitXpopDir(dir, result.hash, 10)
+  //   generatedJson['account_set']['w_seed'] = parseJsonXpop(xpop)
+  // }, 15000)
   // it('account_set - w set flag', async () => {
   //   const aliceWallet = testContext.alice
 
