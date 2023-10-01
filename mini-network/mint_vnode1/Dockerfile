@@ -1,4 +1,4 @@
-FROM transia/hooksv3d-binary:latest as rippled
+FROM transia/xahau-binary:latest as xahaud
 # FROM ubuntu:jammy as base
 
 WORKDIR /app
