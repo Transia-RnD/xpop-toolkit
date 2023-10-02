@@ -72,7 +72,7 @@ services:
     container_name: burn-explorer
     environment:
       - PORT=3000
-      - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:6008
+      - VUE_APP_WSS_ENDPOINT=ws://localhost:6008
     ports:
       - "3000:3000"
     networks:
@@ -166,7 +166,7 @@ services:
     container_name: mint-explorer
     environment:
       - PORT=3001
-      - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:6016
+      - VUE_APP_WSS_ENDPOINT=ws://localhost:6016
     ports:
       - "3001:3001"
     networks:
