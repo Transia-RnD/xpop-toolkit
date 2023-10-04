@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 rippledconfig=`/bin/cat /config/rippled.cfg 2>/dev/null | wc -l`
 validatorstxt=`/bin/cat /config/validators.txt 2>/dev/null | wc -l`
