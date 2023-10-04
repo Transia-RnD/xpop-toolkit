@@ -60,7 +60,7 @@ export async function main(): Promise<void> {
 
   // GET XPOP
   const dir = path.join(process.cwd(), '../mini-network/burn_pnode1/xpop')
-  const xpopHex = await getXpopBlob(dir, burnResult.hash, 'dir', 10)
+  const xpopHex = await getXpopBlob(burnResult.hash, dir, 'dir', 10)
 
   // IMPORT OUT
   const seq = await accountSeq(mintClient, aliceWallet.classicAddress)
@@ -68,12 +68,12 @@ export async function main(): Promise<void> {
     TransactionType: 'Import',
     Account: aliceWallet.classicAddress,
     Blob: xpopHex,
-    Sequence: seq,
-    Fee: '0',
   }
-  const mintResult = await Xrpld.submitXahaud(mintClient, mintTx, aliceWallet)
-  console.log(mintResult)
-
+  if (seq === 0) {
+    mintTx.Sequence = 0
+    mintTx.Fee = '0'
+  }
+  await Xrpld.submitXahaud(mintClient, mintTx, aliceWallet)
   await mintClient.disconnect()
 }
 
