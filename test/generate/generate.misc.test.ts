@@ -1,5 +1,5 @@
-import { decode, encode } from '@transia/xrpl'
-import { saveJsonToFile } from './utils'
+import { Transaction, decode, encode } from '@transia/xrpl'
+import { TestCase, saveJsonToFile } from '../utils'
 
 const decodeManifest = (str: string): string =>
   Buffer.from(str, 'base64').toString('hex').toUpperCase()
@@ -120,7 +120,7 @@ describe('Validation: decode / encoded', () => {
     const expectedJson = {
       sequence: 2,
       expiration: 741398400,
-      validators: {},
+      validators: ['wrong', 'wrong'],
     }
     const blobStr = JSON.stringify(expectedJson)
     const encodedBlob = encodeBlob(blobStr)
@@ -129,7 +129,55 @@ describe('Validation: decode / encoded', () => {
       testValue: encodedBlob,
     })
   })
-  it('Import: unl blob contained an invalid validator key (validation_public_key missing), skipping', async () => {
+  it('Import: unl blob contained an invalid manifest, skipping', async () => {
+    const expectedJson = {
+      sequence: 2,
+      expiration: 741398400,
+      validators: [
+        {
+          validation_public_key:
+            'ED38BD445AFD62159620CC196C2668A26B6FBB36B099EB55B38A58C11C1204DE5C',
+          manifest: 'wrong',
+        },
+        {
+          validation_public_key:
+            'ED38BD445AFD62159620CC196C2668A26B6FBB36B099EB55B38A58C11C1204DE5C',
+          manifest: 'wrong',
+        },
+      ],
+    }
+    const blobStr = JSON.stringify(expectedJson)
+    const encodedBlob = encodeBlob(blobStr)
+    testContext.push({
+      testName: 'Import: unl blob contained an invalid manifest, skipping',
+      testValue: encodedBlob,
+    })
+  })
+  it('Import: unl blob contained an invalid validator key, skipping', async () => {
+    const expectedJson = {
+      sequence: 2,
+      expiration: 741398400,
+      validators: [
+        {
+          validation_public_key: 'ED',
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
+        },
+        {
+          validation_public_key: 'ED',
+          manifest:
+            'JAAAAAJxIe2+4w+uku7ojhxJgNCez96ZoRbQeOwhhX2xtHtCZBjkKHMhA9SmHDxOiCMTZl5nRxrp2yjWZ5gjx2DroUFrU4nrEqU7dkcwRQIhALdEFejY+pUngli7sTvib0BmDHP7N6ikVEBI6H7IwU1zAiBdsyoSqPcC2NMqgAnHXHGdkAIwBQD1AUg9X8ZJLyfcwHASQCt1bKVzOMxRQmR3wNK4dKdofIGrxE9SjuLR6Pa8B5n08SYJ8K62ge+9a6BtZalEm/HOdcz0NAFOcycrF/CtSA4=',
+        },
+      ],
+    }
+    const blobStr = JSON.stringify(expectedJson)
+    const encodedBlob = encodeBlob(blobStr)
+    testContext.push({
+      testName: 'Import: unl blob contained an invalid validator key, skipping',
+      testValue: encodedBlob,
+    })
+  })
+  it('Import: unl blob contained no validator key, skipping', async () => {
     const expectedJson = {
       sequence: 2,
       expiration: 741398400,
@@ -147,8 +195,7 @@ describe('Validation: decode / encoded', () => {
     const blobStr = JSON.stringify(expectedJson)
     const encodedBlob = encodeBlob(blobStr)
     testContext.push({
-      testName:
-        'Import: unl blob contained an invalid validator key (), skipping',
+      testName: 'Import: unl blob contained no validator key, skipping',
       testValue: encodedBlob,
     })
   })
@@ -225,19 +272,22 @@ describe('Validation: decode / encoded', () => {
       testValue: encodedBlob,
     })
   })
-  it('Import: unl blob json (after base64 decoding) lacked required field (sequence) and/or types', async () => {
+  it('Import: unl blob list entry manifest master key did not match master key, skipping', async () => {
     const expectedJson = {
+      sequence: 2,
       expiration: 741398400,
       validators: [
         {
           validation_public_key:
             'ED38BD445AFD62159620CC196C2668A26B6FBB36B099EB55B38A58C11C1204DE5C',
-          manifest: 1,
+          manifest:
+            'JAAAAAJxIe2+4w+uku7ojhxJgNCez96ZoRbQeOwhhX2xtHtCZBjkKHMhA9SmHDxOiCMTZl5nRxrp2yjWZ5gjx2DroUFrU4nrEqU7dkcwRQIhALdEFejY+pUngli7sTvib0BmDHP7N6ikVEBI6H7IwU1zAiBdsyoSqPcC2NMqgAnHXHGdkAIwBQD1AUg9X8ZJLyfcwHASQCt1bKVzOMxRQmR3wNK4dKdofIGrxE9SjuLR6Pa8B5n08SYJ8K62ge+9a6BtZalEm/HOdcz0NAFOcycrF/CtSA4=',
         },
         {
           validation_public_key:
-            'EDBEE30FAE92EEE88E1C4980D09ECFDE99A116D078EC21857DB1B47B426418E428',
-          manifest: 1,
+            'EDAEE30FAE92EEE88E1C4980D09ECFDE99A116D078EC21857DB1B47B426418E428',
+          manifest:
+            'JAAAAAJxIe2+4w+uku7ojhxJgNCez96ZoRbQeOwhhX2xtHtCZBjkKHMhA9SmHDxOiCMTZl5nRxrp2yjWZ5gjx2DroUFrU4nrEqU7dkcwRQIhALdEFejY+pUngli7sTvib0BmDHP7N6ikVEBI6H7IwU1zAiBdsyoSqPcC2NMqgAnHXHGdkAIwBQD1AUg9X8ZJLyfcwHASQCt1bKVzOMxRQmR3wNK4dKdofIGrxE9SjuLR6Pa8B5n08SYJ8K62ge+9a6BtZalEm/HOdcz0NAFOcycrF/CtSA4=',
         },
       ],
     }
@@ -245,11 +295,71 @@ describe('Validation: decode / encoded', () => {
     const encodedBlob = encodeBlob(blobStr)
     testContext.push({
       testName:
-        'Import: unl blob json (after base64 decoding) lacked required field (sequence) and/or types',
+        'Import: unl blob list entry manifest master key did not match master key, skipping',
+      testValue: encodedBlob,
+    })
+  })
+  it('Import: unl blob list entry manifest signature invalid, skipping', async () => {
+    const manifest =
+      'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE='
+    const decodedManifest = decodeManifest(manifest)
+    const resultManifest = decode(decodedManifest)
+    resultManifest.Sequence = 5
+    const xrplEncoded = encode(resultManifest as unknown as Transaction)
+    const base64Encoded = encodeManifest(xrplEncoded)
+
+    const expectedJson = {
+      sequence: 2,
+      expiration: 741398400,
+      validators: [
+        {
+          validation_public_key:
+            'ED38BD445AFD62159620CC196C2668A26B6FBB36B099EB55B38A58C11C1204DE5C',
+          manifest: base64Encoded,
+        },
+        {
+          validation_public_key:
+            'EDBEE30FAE92EEE88E1C4980D09ECFDE99A116D078EC21857DB1B47B426418E428',
+          manifest:
+            'JAAAAAJxIe2+4w+uku7ojhxJgNCez96ZoRbQeOwhhX2xtHtCZBjkKHMhA9SmHDxOiCMTZl5nRxrp2yjWZ5gjx2DroUFrU4nrEqU7dkcwRQIhALdEFejY+pUngli7sTvib0BmDHP7N6ikVEBI6H7IwU1zAiBdsyoSqPcC2NMqgAnHXHGdkAIwBQD1AUg9X8ZJLyfcwHASQCt1bKVzOMxRQmR3wNK4dKdofIGrxE9SjuLR6Pa8B5n08SYJ8K62ge+9a6BtZalEm/HOdcz0NAFOcycrF/CtSA4=',
+        },
+      ],
+    }
+    const blobStr = JSON.stringify(expectedJson)
+    const encodedBlob = encodeBlob(blobStr)
+    testContext.push({
+      testName:
+        'Import: unl blob list entry manifest signature invalid, skipping',
       testValue: encodedBlob,
     })
   })
   it('Import: unl blob json (after base64 decoding) lacked required field (sequence) and/or types', async () => {
+    const expectedJson = {
+      expiration: 741398400,
+      validators: [
+        {
+          validation_public_key:
+            'ED38BD445AFD62159620CC196C2668A26B6FBB36B099EB55B38A58C11C1204DE5C',
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
+        },
+        {
+          validation_public_key:
+            'EDBEE30FAE92EEE88E1C4980D09ECFDE99A116D078EC21857DB1B47B426418E428',
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
+        },
+      ],
+    }
+    const blobStr = JSON.stringify(expectedJson)
+    const encodedBlob = encodeBlob(blobStr)
+    testContext.push({
+      testName:
+        'Import: unl blob json (after base64 decoding) lacked field (sequence) and/or types',
+      testValue: encodedBlob,
+    })
+  })
+  it('Import: unl blob json (after base64 decoding) wrong required field (sequence) and/or types', async () => {
     const expectedJson = {
       sequence: '2',
       expiration: 741398400,
@@ -257,12 +367,14 @@ describe('Validation: decode / encoded', () => {
         {
           validation_public_key:
             'ED38BD445AFD62159620CC196C2668A26B6FBB36B099EB55B38A58C11C1204DE5C',
-          manifest: 1,
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
         },
         {
           validation_public_key:
             'EDBEE30FAE92EEE88E1C4980D09ECFDE99A116D078EC21857DB1B47B426418E428',
-          manifest: 1,
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
         },
       ],
     }
@@ -270,7 +382,7 @@ describe('Validation: decode / encoded', () => {
     const encodedBlob = encodeBlob(blobStr)
     testContext.push({
       testName:
-        'Import: unl blob json (after base64 decoding) lacked required field (sequence) and/or types',
+        'Import: unl blob json (after base64 decoding) wrong required field (sequence) and/or types',
       testValue: encodedBlob,
     })
   })
@@ -281,12 +393,14 @@ describe('Validation: decode / encoded', () => {
         {
           validation_public_key:
             'ED38BD445AFD62159620CC196C2668A26B6FBB36B099EB55B38A58C11C1204DE5C',
-          manifest: 1,
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
         },
         {
           validation_public_key:
             'EDBEE30FAE92EEE88E1C4980D09ECFDE99A116D078EC21857DB1B47B426418E428',
-          manifest: 1,
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
         },
       ],
     }
@@ -298,7 +412,7 @@ describe('Validation: decode / encoded', () => {
       testValue: encodedBlob,
     })
   })
-  it('Import: unl blob json (after base64 decoding) lacked required field (expiration) and/or types', async () => {
+  it('Import: unl blob json (after base64 decoding) wrong required field (expiration) and/or types', async () => {
     const expectedJson = {
       sequence: 2,
       expiration: '741398400',
@@ -306,12 +420,14 @@ describe('Validation: decode / encoded', () => {
         {
           validation_public_key:
             'ED38BD445AFD62159620CC196C2668A26B6FBB36B099EB55B38A58C11C1204DE5C',
-          manifest: 1,
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
         },
         {
           validation_public_key:
             'EDBEE30FAE92EEE88E1C4980D09ECFDE99A116D078EC21857DB1B47B426418E428',
-          manifest: 1,
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
         },
       ],
     }
@@ -319,7 +435,62 @@ describe('Validation: decode / encoded', () => {
     const encodedBlob = encodeBlob(blobStr)
     testContext.push({
       testName:
-        'Import: unl blob json (after base64 decoding) lacked required field (expiration) and/or types',
+        'Import: unl blob json (after base64 decoding) wrong required field (expiration) and/or types',
+      testValue: encodedBlob,
+    })
+  })
+  it('Import: unl blob json (after base64 decoding) wrong required field (effective) and/or types', async () => {
+    const expectedJson = {
+      sequence: 2,
+      expiration: 741398400,
+      effective: '741398400',
+      validators: [
+        {
+          validation_public_key:
+            'ED38BD445AFD62159620CC196C2668A26B6FBB36B099EB55B38A58C11C1204DE5C',
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
+        },
+        {
+          validation_public_key:
+            'EDBEE30FAE92EEE88E1C4980D09ECFDE99A116D078EC21857DB1B47B426418E428',
+          manifest:
+            'JAAAAAJxIe04vURa/WIVliDMGWwmaKJrb7s2sJnrVbOKWMEcEgTeXHMhAoGMNcsgUUNwKo+h7zhaXKF+HGw6XhEjoDKralkYnMjKdkcwRQIhAJ7cN4J6NdVfpnvEI/ZeuWCTvnpaJirKNFcC3zMOjgwjAiAbKI0fbXgS1RLloNhxdHhVq9ozEWVE9cIwXDN3AxqyY3ASQCt0+u/iNSDD6bXvUTtdmt4Nrtlbx4VzumTpfjRYp4lMoI/h43pUTjp7VFoXbnKWjVhqNaGm577K6J697XZ7TQE=',
+        },
+      ],
+    }
+    const blobStr = JSON.stringify(expectedJson)
+    const encodedBlob = encodeBlob(blobStr)
+    testContext.push({
+      testName:
+        'Import: unl blob json (after base64 decoding) wrong required field (effective) and/or types',
+      testValue: encodedBlob,
+    })
+  })
+  it('Import: unl blob json (after base64 decoding) lacked required field (validators) and/or types', async () => {
+    const expectedJson = {
+      sequence: 2,
+      expiration: 741398400,
+    }
+    const blobStr = JSON.stringify(expectedJson)
+    const encodedBlob = encodeBlob(blobStr)
+    testContext.push({
+      testName:
+        'Import: unl blob json (after base64 decoding) lacked required field (validators) and/or types',
+      testValue: encodedBlob,
+    })
+  })
+  it('Import: unl blob json (after base64 decoding) wrong required field (validators) and/or types', async () => {
+    const expectedJson = {
+      sequence: 2,
+      expiration: 741398400,
+      validators: 'wrong',
+    }
+    const blobStr = JSON.stringify(expectedJson)
+    const encodedBlob = encodeBlob(blobStr)
+    testContext.push({
+      testName:
+        'Import: unl blob json (after base64 decoding) wrong required field (validators) and/or types',
       testValue: encodedBlob,
     })
   })
@@ -453,28 +624,6 @@ describe('Validation: decode / encoded', () => {
       testValue: encoded,
     })
   })
-  // it('Import: outer and inner txns were (multi) signed with different keys.', async () => {
-  //   const txJson = {
-  //     TransactionType: 'AccountSet',
-  //     Flags: 0,
-  //     Sequence: 2,
-  //     LastLedgerSequence: 108,
-  //     OperationLimit: 21337,
-  //     Fee: '1000000000',
-  //     SigningPubKey:
-  //       'EDA8D46E11FD5D2082A4E6FF3039EB6259FBC2334983D015FC62ECAD0AE4A96C74',
-  //     TxnSignature:
-  //       '549A370E68DBB1947419D4CCDF90CAE0BCA9121593ECC21B3C79EF0F232EB4375F95F1EBCED78B94D09838B5E769D43F041019ADEF3EC206AD3C5177C519560F',
-  //     Account: 'rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn',
-  //   }
-  //   // @ts-expect-error - leave this alone
-  //   const encoded = encode(txJson)
-  //   testContext.push({
-  //     testName:
-  //       'Import: inner txn must be an AccountSet, SetRegularKey or SignerListSet transaction.',
-  //     testValue: encoded,
-  //   })
-  // })
   it('Import: outer and inner txns were signed with different keys.', async () => {
     // SigningPubKey - GOOD: EDA...
     // SigningPubKey - BAD: EBA...
@@ -728,6 +877,13 @@ describe('Validation: decode / encoded', () => {
     testContext.push({
       testName: 'Import: validation inside xpop was not correctly signed',
       testValue: encoded,
+    })
+  })
+  it('Import: validator nodepub did not appear in validator list but did appear in data section', async () => {
+    testContext.push({
+      testName:
+        'Import: validator nodepub did not appear in validator list but did appear in data section',
+      testValue: 'n84QWAYxKUHacmyFTnzK4bvqVcUfr6RwtaNxCM2cJRY59UHmz1Fr',
     })
   })
 })
