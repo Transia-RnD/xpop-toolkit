@@ -4,6 +4,7 @@ import child_process from 'child_process'
 
 import { fromDateToEffective, fromDaysToExpiration } from './utils'
 import { VL } from './types'
+import { decode } from '@transia/xrpl'
 
 export class PublisherClient {
   private binPath: string
@@ -11,7 +12,7 @@ export class PublisherClient {
   private vl: VL
 
   constructor(manifest: string = null, vlPath: string = null) {
-    this.binPath = path.join(__dirname, 'bin/validator-list')
+    this.binPath = path.join(process.cwd(), 'bin/validator-list')
     if (vlPath) {
       try {
         this.vlPath = vlPath
@@ -24,7 +25,7 @@ export class PublisherClient {
     }
 
     if (manifest) {
-      this.vlPath = path.join(__dirname, 'vl.json')
+      this.vlPath = path.join(process.cwd(), 'vl.json')
       this.vl = {
         manifest: manifest,
         blob: {
@@ -45,9 +46,9 @@ export class PublisherClient {
       throw new Error('Invalid Blob')
     }
 
-    const decoded = Buffer.from(manifest, 'base64').toString('hex')
-    const decodedJson = JSON.parse(decoded)
-    const publicKey = decodedJson.PublicKey.toUpperCase()
+    const encoded = Buffer.from(manifest, 'base64').toString('hex')
+    const decoded = decode(encoded)
+    const publicKey = (decoded.PublicKey as string).toUpperCase()
     const newValidator = {
       pk: publicKey,
       manifest: manifest,
@@ -78,7 +79,7 @@ export class PublisherClient {
   }
 
   public signUnl(
-    pk: number,
+    pk: string,
     effective: number = null,
     expiration: number = null
   ): string {
@@ -95,7 +96,7 @@ export class PublisherClient {
     }
 
     if (!expiration) {
-      expiration = fromDaysToExpiration(30)
+      expiration = fromDaysToExpiration(Date.now(), 30)
     }
 
     const vlManifests = this.vl.blob.validators.map(

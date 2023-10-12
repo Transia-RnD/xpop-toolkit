@@ -20,7 +20,7 @@ export class ValidatorClient {
     try {
       return readJson(this.keyPath)
     } catch (e) {
-      console.log(e)
+      // console.log(e)
       return null
     }
   }
@@ -37,7 +37,7 @@ export class ValidatorClient {
     return readJson(this.keyPath)
   }
 
-  setDomain(domain: string): void {
+  async setDomain(domain: string): Promise<void> {
     const args1 = [
       this.binPath,
       'set_domain',
@@ -48,7 +48,7 @@ export class ValidatorClient {
     execSync(args1.join(' '))
   }
 
-  createToken(): string {
+  async createToken(): Promise<string> {
     const token_path = path.join(this.keystorePath, `${this.name}/token.txt`)
     const out = fs.openSync(token_path, 'w')
     const args = [this.binPath, 'create_token', '--keyfile', this.keyPath]
@@ -58,7 +58,7 @@ export class ValidatorClient {
     return readTxt(token_path)
   }
 
-  createManifest(): string {
+  async createManifest(): Promise<string> {
     const manifest_path = path.join(
       this.keystorePath,
       `${this.name}/manifest.txt`

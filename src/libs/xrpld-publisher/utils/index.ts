@@ -8,9 +8,14 @@ export function fromDateToEffective(date_str: string): number {
   return effectiveTs - rippledTs
 }
 
-export function fromDaysToExpiration(days: number): number {
-  const currentTime: number = Math.floor(Date.now() / 1000) - rippledTs
+export function fromDaysToExpiration(ts: number, days: number): number {
+  const currentTime: number = Math.floor(ts / 1000) - 946684800
   return currentTime + 86400 * days // expires in x days
+}
+
+export function convertStringToTimestamp(dateStr: string): number {
+  const timestamp = Date.parse(dateStr)
+  return timestamp
 }
 
 export function encodeBlob(blob: object): string {
