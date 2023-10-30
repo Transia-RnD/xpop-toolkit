@@ -1,6 +1,6 @@
 {
   "name": "@transia/xpop-toolkit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A library for using the xpop features.",
   "main": "dist/npm/src/index.js",
   "files": [
@@ -22,7 +22,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@transia/xrpl": "^2.7.3-alpha.15",
+    "@transia/xrpl": "^2.7.3-alpha.16",
     "@types/base-64": "^1.0.0",
     "axios": "^1.4.0",
     "chai": "^4.3.7",

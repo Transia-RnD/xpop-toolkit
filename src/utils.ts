@@ -35,7 +35,7 @@ export async function readWaitXpopUrl(
   url: string,
   filename: string,
   retryCount: number
-): Promise<Buffer> {
+): Promise<string> {
   const fileUrl = `${url}/${filename}`
   let attempt = 1
   while (attempt <= retryCount) {
@@ -45,7 +45,7 @@ export async function readWaitXpopUrl(
           Accept: 'application/json',
         },
       })
-      return Buffer.from(JSON.stringify(response.data), 'utf-8')
+      return response.data
     } catch (error: any) {
       console.log(`Attempt ${attempt} failed: ${error.message}`)
       await new Promise((res) => setTimeout(res, 2000))
@@ -105,9 +105,7 @@ export async function getXpopBlob(
   try {
     switch (type) {
       case 'url':
-        return (await readWaitXpopUrl(urlOrDir, hash, retryCount))
-          .toString('hex')
-          .toUpperCase()
+        return (await readWaitXpopUrl(urlOrDir, hash, retryCount)).toUpperCase()
       default:
         return (await readWaitXpopDir(urlOrDir, hash, retryCount))
           .toString('hex')
