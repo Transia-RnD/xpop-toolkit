@@ -6,6 +6,7 @@
   "scripts": {
     "mini-network": "ts-node src/mini-network.ts",
     "testnet": "ts-node src/testnet.ts",
+    "mainnet": "ts-node src/mainnet.ts",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src"
   },
@@ -15,7 +16,8 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@transia/xpop-toolkit": "^1.0.2",
+    "@transia/xpop-toolkit": "^1.0.4",
+    "@transia/xrpl": "^2.7.3-alpha.16",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
