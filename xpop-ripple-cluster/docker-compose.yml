@@ -1,0 +1,201 @@
+networks:
+  test-ripple-network:
+    driver: bridge
+services:
+  explorer:
+    container_name: explorer
+    environment:
+    - PORT=4000
+    - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:6028
+    image: transia/explorer:latest
+    networks:
+    - test-ripple-network
+    ports:
+    - 4000:4000
+  pnode1:
+    build:
+      context: pnode1
+      dockerfile: Dockerfile
+    container_name: pnode1
+    networks:
+    - test-ripple-network
+    ports:
+    - 5015:5015
+    - 5025:5025
+    - 6026:6026
+    - 6028:6028
+    - 51245:51245
+    volumes:
+    - ${PWD}/pnode1/log:/var/log/rippled
+    - ${PWD}/pnode1/lib:/var/lib/rippled
+    - ${PWD}/pnode1/xpop:/www/data/rippled/xpop
+  vl:
+    build:
+      context: vl
+      dockerfile: Dockerfile
+    container_name: vl
+    networks:
+    - test-ripple-network
+    ports:
+    - 80:80
+  vnode1:
+    build:
+      context: vnode1
+      dockerfile: Dockerfile
+    container_name: vnode1
+    networks:
+    - test-ripple-network
+    ports:
+    - 5105:5105
+    - 5115:5115
+    - 6116:6116
+    - 6118:6118
+    - 51335:51335
+    volumes:
+    - ${PWD}/vnode1/log:/var/log/rippled
+    - ${PWD}/vnode1/lib:/var/lib/rippled
+  vnode10:
+    build:
+      context: vnode10
+      dockerfile: Dockerfile
+    container_name: vnode10
+    networks:
+    - test-ripple-network
+    ports:
+    - 6005:6005
+    - 6015:6015
+    - 7016:7016
+    - 7018:7018
+    - 52235:52235
+    volumes:
+    - ${PWD}/vnode10/log:/var/log/rippled
+    - ${PWD}/vnode10/lib:/var/lib/rippled
+  vnode2:
+    build:
+      context: vnode2
+      dockerfile: Dockerfile
+    container_name: vnode2
+    networks:
+    - test-ripple-network
+    ports:
+    - 5205:5205
+    - 5215:5215
+    - 6216:6216
+    - 6218:6218
+    - 51435:51435
+    volumes:
+    - ${PWD}/vnode2/log:/var/log/rippled
+    - ${PWD}/vnode2/lib:/var/lib/rippled
+  vnode3:
+    build:
+      context: vnode3
+      dockerfile: Dockerfile
+    container_name: vnode3
+    networks:
+    - test-ripple-network
+    ports:
+    - 5305:5305
+    - 5315:5315
+    - 6316:6316
+    - 6318:6318
+    - 51535:51535
+    volumes:
+    - ${PWD}/vnode3/log:/var/log/rippled
+    - ${PWD}/vnode3/lib:/var/lib/rippled
+  vnode4:
+    build:
+      context: vnode4
+      dockerfile: Dockerfile
+    container_name: vnode4
+    networks:
+    - test-ripple-network
+    ports:
+    - 5405:5405
+    - 5415:5415
+    - 6416:6416
+    - 6418:6418
+    - 51635:51635
+    volumes:
+    - ${PWD}/vnode4/log:/var/log/rippled
+    - ${PWD}/vnode4/lib:/var/lib/rippled
+  vnode5:
+    build:
+      context: vnode5
+      dockerfile: Dockerfile
+    container_name: vnode5
+    networks:
+    - test-ripple-network
+    ports:
+    - 5505:5505
+    - 5515:5515
+    - 6516:6516
+    - 6518:6518
+    - 51735:51735
+    volumes:
+    - ${PWD}/vnode5/log:/var/log/rippled
+    - ${PWD}/vnode5/lib:/var/lib/rippled
+  vnode6:
+    build:
+      context: vnode6
+      dockerfile: Dockerfile
+    container_name: vnode6
+    networks:
+    - test-ripple-network
+    ports:
+    - 5605:5605
+    - 5615:5615
+    - 6616:6616
+    - 6618:6618
+    - 51835:51835
+    volumes:
+    - ${PWD}/vnode6/log:/var/log/rippled
+    - ${PWD}/vnode6/lib:/var/lib/rippled
+  vnode7:
+    build:
+      context: vnode7
+      dockerfile: Dockerfile
+    container_name: vnode7
+    networks:
+    - test-ripple-network
+    ports:
+    - 5705:5705
+    - 5715:5715
+    - 6716:6716
+    - 6718:6718
+    - 51935:51935
+    volumes:
+    - ${PWD}/vnode7/log:/var/log/rippled
+    - ${PWD}/vnode7/lib:/var/lib/rippled
+  vnode8:
+    build:
+      context: vnode8
+      dockerfile: Dockerfile
+    container_name: vnode8
+    networks:
+    - test-ripple-network
+    ports:
+    - 5805:5805
+    - 5815:5815
+    - 6816:6816
+    - 6818:6818
+    - 52035:52035
+    volumes:
+    - ${PWD}/vnode8/log:/var/log/rippled
+    - ${PWD}/vnode8/lib:/var/lib/rippled
+  vnode9:
+    build:
+      context: vnode9
+      dockerfile: Dockerfile
+    container_name: vnode9
+    networks:
+    - test-ripple-network
+    ports:
+    - 5905:5905
+    - 5915:5915
+    - 6916:6916
+    - 6918:6918
+    - 52135:52135
+    volumes:
+    - ${PWD}/vnode9/log:/var/log/rippled
+    - ${PWD}/vnode9/lib:/var/lib/rippled
+version: '3.9'

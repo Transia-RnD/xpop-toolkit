@@ -1,7 +1,7 @@
 import {
   AccountSet,
-  dropsToXrp,
-  Payment,
+  // dropsToXrp,
+  // Payment,
   xrpToDrops,
   // AccountSetAsfFlags,
   // SetRegularKey,
@@ -14,26 +14,26 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
-  burnUrl,
+  // burnUrl,
   // SDK
   Xrpld,
   // pay,
   // ICXRP,
   readWaitXpopDir,
-  balance,
+  // balance,
 } from '../../dist/npm/src'
 import { parseJsonXpop, saveJsonToFile } from '../utils'
 import path from 'path'
-const dir = path.join(process.cwd(), '/mini-network/burn_pnode1/xpop')
+const dir = path.join(process.cwd(), '/xpop-ripple-cluster/pnode1/xpop')
 
 describe('Burn - Account Set Group', () => {
   let testContext: XrplIntegrationTestContext
   let generatedJson: Record<string, any> = {}
 
   beforeAll(async () => {
-    testContext = await setupClient(burnUrl)
+    testContext = await setupClient('ws://0.0.0.0:6026')
     generatedJson['account_set'] = {}
-  }, 10000)
+  }, 20000)
   afterAll(async () => {
     teardownClient(testContext)
     saveJsonToFile('generated.account_set.json', generatedJson)
@@ -57,55 +57,55 @@ describe('Burn - Account Set Group', () => {
   //   const strJsonXpop = await readWaitXpopDir(dir, result.hash, 10)
   //   generatedJson['account_set']['min'] = parseJsonXpop(strJsonXpop)
   // }, 10000)
-  it('account_set - max', async () => {
-    const aliceWallet = testContext.alice
-    const bal = await balance(
-      testContext.client,
-      testContext.master.classicAddress
-    )
-    const xrpBal = dropsToXrp(bal)
-    const availDrops = xrpToDrops(String(parseInt(xrpBal) - 200))
-
-    const drainTx: Payment = {
-      TransactionType: 'Payment',
-      Account: testContext.master.classicAddress,
-      Destination: aliceWallet.classicAddress,
-      Amount: availDrops,
-    }
-    await Xrpld.submitRippled(testContext.client, drainTx, testContext.master)
-    const builtTx: AccountSet = {
-      TransactionType: 'AccountSet',
-      Account: aliceWallet.classicAddress,
-      // @ts-expect-error - leave this alone
-      OperationLimit: 21337,
-      Fee: availDrops,
-    }
-    const result = await Xrpld.submitRippled(
-      testContext.client,
-      builtTx,
-      aliceWallet
-    )
-    const strJsonXpop = await readWaitXpopDir(dir, result.hash, 10)
-    generatedJson['account_set']['max'] = parseJsonXpop(strJsonXpop)
-  }, 10000)
-  // it('account_set - w/ seed', async () => {
+  // it('account_set - max', async () => {
   //   const aliceWallet = testContext.alice
+  //   const bal = await balance(
+  //     testContext.client,
+  //     testContext.master.classicAddress
+  //   )
+  //   const xrpBal = dropsToXrp(bal)
+  //   const availDrops = xrpToDrops(String(parseInt(xrpBal) - 200))
+
+  //   const drainTx: Payment = {
+  //     TransactionType: 'Payment',
+  //     Account: testContext.master.classicAddress,
+  //     Destination: aliceWallet.classicAddress,
+  //     Amount: availDrops,
+  //   }
+  //   await Xrpld.submitRippled(testContext.client, drainTx, testContext.master)
   //   const builtTx: AccountSet = {
   //     TransactionType: 'AccountSet',
   //     Account: aliceWallet.classicAddress,
   //     // @ts-expect-error - leave this alone
   //     OperationLimit: 21337,
-  //     Fee: xrpToDrops(1000),
+  //     Fee: availDrops,
   //   }
   //   const result = await Xrpld.submitRippled(
   //     testContext.client,
   //     builtTx,
   //     aliceWallet
   //   )
-  //   console.log(result.hash)
-  //   const xpop = await readWaitXpopDir(dir, result.hash, 10)
-  //   generatedJson['account_set']['w_seed'] = parseJsonXpop(xpop)
-  // }, 15000)
+  //   const strJsonXpop = await readWaitXpopDir(dir, result.hash, 10)
+  //   generatedJson['account_set']['max'] = parseJsonXpop(strJsonXpop)
+  // }, 10000)
+  it('account_set - w/ seed', async () => {
+    const aliceWallet = testContext.alice
+    const builtTx: AccountSet = {
+      TransactionType: 'AccountSet',
+      Account: aliceWallet.classicAddress,
+      // @ts-expect-error - leave this alone
+      OperationLimit: 21337,
+      Fee: xrpToDrops(1000),
+    }
+    const result = await Xrpld.submitRippled(
+      testContext.client,
+      builtTx,
+      aliceWallet
+    )
+    console.log(result.hash)
+    const xpop = await readWaitXpopDir(dir, result.hash, 10)
+    generatedJson['account_set']['w_seed'] = parseJsonXpop(xpop)
+  }, 15000)
   // it('account_set - w set flag', async () => {
   //   const aliceWallet = testContext.alice
 
