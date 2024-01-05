@@ -2,10 +2,7 @@
 Contains the operations that can are performed by the application.
 */
 import { Client, Transaction, Wallet, validate } from '@transia/xrpl'
-import {
-  appTransaction,
-  prepareTransactionV3,
-} from './libs/xrpl-helpers/transaction'
+import { appTransaction } from './libs/xrpl-helpers/transaction'
 
 export class Xrpld {
   // TX
@@ -21,7 +18,6 @@ export class Xrpld {
   }
   // TX V3
   static async submitXahaud(client: Client, tx: Transaction, wallet: Wallet) {
-    await prepareTransactionV3(client, tx)
     // @ts-expect-error - leave this alone
     validate(tx)
     const txResponse = await appTransaction(client, tx, wallet, {
